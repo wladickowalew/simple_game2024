@@ -1,15 +1,16 @@
 from random import randint
-
+from Game_things import ThingBuilder
 
 
 class Room:
 
     __N = 1
+    __THING_BUILDER = ThingBuilder()
     def __init__(self):
         self.num = Room.__N
         Room.__N += 1
         self.enemies = []
-        self.things = []
+        self.things = self.__THING_BUILDER.get_things(5)
         self.rooms = []
         self.first_enter = True
 

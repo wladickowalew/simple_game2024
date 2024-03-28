@@ -1,4 +1,4 @@
-from random import randint
+from random import randint, choice
 
 
 class Thing:
@@ -6,16 +6,51 @@ class Thing:
         self.type = type
 
 
+
 class Armor(Thing):
-    def __init__(self):
+    ARMOR_PROBABILITY = 33
+    NAMES = [
+        "Плотная кольчужная броня", "Лордовская пластинчатая доспеха", "Рыцарский латный доспех",
+        "Герцогская масонская броня", "Крестьянская кожаная доспеха", "Барональная стальная кольчуга",
+        "Дружинная железная бригантина", "Шайкская шкура мантия", "Монашеский роба",
+        "Ординский плащ-накидка", "Викингская кольчужная рубаха", "Телеранская цельная плита",
+        "Элфийский дружищща лучник", "Гномий каменный щит", "Гоблинская шапка с шлемом",
+        "Жрический заклинательный плащ", "Орковский берсеркерский кожаный доспех", "Троллья кожаная кираса",
+        "Эльфийский небесный пластинчатым доспех", "Гномий огненный щит"
+    ]
+
+    def __init__(self, level=1):
         super().__init__("Броня")
-        self.level = 1
+        self.name = choice(self.NAMES)
+        self.level = 1 if level < 1 else level
+
+    def __str__(self):
+        return f"ARMOR ({self.name}, {self.level})"
+
+    def __repr__(self):
+        return self.__str__()
 
 
 class Weapon(Thing):
-    def __init__(self):
+    WEAPON_PROBABILITY = 33
+    NAMES = [
+        "Драконий клинок", "Лунный молот", "Кровавый пик", "Грозовой посох",
+        "Пламенный меч", "Тенистый кинжал", "Каменный буран", "Вихревая булава",
+        "Роскошный рапир", "Смертоносный топор", "Пепельный арбалет", "Солнечная палица",
+        "Могучий обелиск", "Мрачная коса", "Ядовитая стрела", "Кристальный кинжал",
+        "Костяной копь", "Звездный меч", "Теневой лук", "Стальной ятаган",
+    ]
+
+    def __init__(self, level=1):
         super().__init__("Оружие")
-        self.level = 1
+        self.name = choice(self.NAMES)
+        self.level = 1 if level < 1 else level
+
+    def __str__(self):
+        return f"WEAPON ({self.name}, {self.level})"
+
+    def __repr__(self):
+        return self.__str__()
 
 
 class Eat(Thing):
@@ -31,7 +66,8 @@ class Eat(Thing):
         return f"EAT ({self.name}, {self.type}, {self.rarity})"
 
 
-class Eat_Builder:
+class EatBuilder:
+    EAT_PROBABILITY = 33
     TYPE_HP = 0
     TYPE_ATTACK = 1
     FOOD = [
@@ -60,3 +96,21 @@ class Eat_Builder:
             a, b = self.rarity_intervals[i]
             if a <= num <= b:
                 return self.FOOD[i]
+
+
+class ThingBuilder:
+    def __init__(self):
+        self.eat_builder = EatBuilder()
+
+    def get_things(self, level):
+        things = []
+        p = randint(1, 100)
+        if p <= Weapon.WEAPON_PROBABILITY:
+            things.append(Weapon(level + randint(-2, 2)))
+        p = randint(1, 100)
+        if p <= Armor.ARMOR_PROBABILITY:
+            things.append(Armor(level + randint(-2, 2)))
+        p = randint(1, 100)
+        if p <= EatBuilder.EAT_PROBABILITY:
+            things.append(self.eat_builder.get_food())
+        return things
