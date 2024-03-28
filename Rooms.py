@@ -1,6 +1,7 @@
 from random import randint
 
 
+
 class Room:
 
     __N = 1
