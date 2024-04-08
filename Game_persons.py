@@ -18,15 +18,17 @@ class GamePerson:
 
 
 class Player(GamePerson):
-    def __init__(self, name):
+    def __init__(self, name, room):
         super().__init__(100, 50)
         self.name = name
         self.inventory = []
         self.current_weapon = None
-        self.armor_head = None
-        self.armor_body = None
-        self.armor_foot = None
-        self.armor_arm = None
+        self.armor = None
+        self.current_room = room
+        # self.armor_head = None
+        # self.armor_body = None
+        # self.armor_foot = None
+        # self.armor_arm = None
 
 
 class Enemy(GamePerson):
