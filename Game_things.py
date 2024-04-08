@@ -27,8 +27,6 @@ class Armor(Thing):
     def __str__(self):
         return f"ARMOR ({self.name}, {self.level})"
 
-    def __repr__(self):
-        return self.__str__()
 
 
 class Weapon(Thing):

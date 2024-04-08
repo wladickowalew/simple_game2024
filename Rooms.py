@@ -1,15 +1,17 @@
 from random import randint
 from Game_things import ThingBuilder
+from Game_persons import EnemyBuilder
 
 
 class Room:
-
     __N = 1
     __THING_BUILDER = ThingBuilder()
+    __ENEMY_BUILDER = EnemyBuilder()
+
     def __init__(self):
         self.num = Room.__N
         Room.__N += 1
-        self.enemies = []
+        self.enemies = self.__ENEMY_BUILDER.get_enemies(5)
         self.things = self.__THING_BUILDER.get_things(5)
         self.rooms = []
         self.first_enter = True
@@ -37,6 +39,6 @@ class Room:
             print("Вы здесь впервые")
         else:
             print("Вы здесь уже были")
-        print("Враг:", *self.enemies)
-        print("Лут:", *self.things)
+        print("Враг:", *self.enemies, sep=", ")
+        print("Лут:", *self.things, sep=", ")
         print("Количество выходов из комнаты:", len(self.rooms))

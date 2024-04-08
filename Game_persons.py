@@ -1,6 +1,10 @@
+from random import randint, choice
+
+
 class GamePerson:
     def __init__(self, hp, attack):
         self.hp = hp
+        self.max_hp = hp
         self.attack = attack
 
     def attack(self, other):
@@ -26,18 +30,67 @@ class Player(GamePerson):
 
 
 class Enemy(GamePerson):
+    GOBLIN_PROBABILITY = 25
+    BEAR_PROBABILITY = 5
+
     def __init__(self, type, attack, hp):
         super().__init__(hp, attack)
         self.type = type
 
+    def get_full_name(self):
+        return ""
+
+    def __str__(self):
+        return self.get_full_name() + f" HP: {self.hp}/{self.max_hp}"
+
+    def __repr__(self):
+        return self.__str__()
+
 
 class Goblin(Enemy):
-    def __init__(self):
+    NAMES = ['Грязнуля', 'Клыкач', 'Ушастик', 'Щупальце',
+             'Хватюня', 'Колючка', 'Вонючек', 'Глазобой',
+             'Камнедроб', 'Зубогрыз', 'Пыхтун', 'Прищур',
+             'Грызло', 'Клепанец', 'Коготун', 'Шмыгун',
+             'Лапосун', 'Острозуб', 'Бешенец', 'Скитунец']
+
+    def __init__(self, level):
         super().__init__("Гоблин", 25, 50)
         self.weapon = None
+        self.name = choice(self.NAMES)
+        self.level = level
+
+    def get_full_name(self):
+        return self.type + " " + self.name
 
 
 class Bear(Enemy):
-    def __init__(self):
+    NAMES = ['Клыкастый', 'Медвежий', 'Огромный', 'Грозный',
+             'Кровавый', 'Бесстрашный', 'Звериный', 'Полосатый',
+             'Ледяной', 'Сокрушительный', 'Гривастый', 'Лютый',
+             'Ужасный', 'Могучий', 'Строгий', 'Бурый',
+             'Хищный', 'Монстрозный', 'Гордый', 'Дикий']
+
+    def __init__(self, level):
         super().__init__("Медведь", 80, 100)
         self.armor = None
+        self.name = choice(self.NAMES)
+        self.level = level
+
+    def get_full_name(self):
+        return self.name + " " + self.type
+
+
+class EnemyBuilder:
+
+    def get_enemies(self, level):
+        enemies = []
+        for i in range(3):
+            p = randint(1, 100)
+            if p <= Enemy.GOBLIN_PROBABILITY:
+                enemies.append(Goblin(level + randint(-2, 2)))
+        p = randint(1, 100)
+        if p <= Enemy.BEAR_PROBABILITY:
+            enemies.append(Bear(level + randint(-2, 2)))
+
+        return enemies
