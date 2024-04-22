@@ -1,4 +1,5 @@
 from Game_things import Thing
+from Game_persons import Player
 
 
 class Inventory:
@@ -25,3 +26,100 @@ class Inventory:
             self.things.append(obj)
             self.sum_mass += obj.mass
             return True
+
+
+class InventoryInterface:
+
+    @staticmethod
+    def main(player: Player):
+        while True:
+            print("""
+            Ты зашёл в меню инвенторя. Что ты хочешь?
+                1) Осомтреть вещи в рюкзаке
+                2) Осмотреть своё снаряжение
+                3) Использовать предмет
+                4) Выкинуть предмет
+                5) Подобрать вещи
+                6) Вернуться к путешествию
+            Укажи номер своего действия: 
+            """)
+            choice = input()
+            if choice in ['1', '2', '3', '4', '5', '6']:
+                if choice == '1':
+                    InventoryInterface.show_inventory(player)
+                elif choice == '2':
+                    InventoryInterface.show_equipment(player)
+                elif choice == '3':
+                    InventoryInterface.use_thing(player)
+                elif choice == '4':
+                    InventoryInterface.delete_thing(player)
+                elif choice == '5':
+                    InventoryInterface.take_equipment(player)
+                else:
+                    break
+            else:
+                print("Ты ввёл что-то непонятное. Попробуй ещё раз")
+
+    @staticmethod
+    def show_inventory(player: Player):
+        things = player.inventory.get_things()
+        print(f"""Ты заглядывешь в рюкзак, вещей: {len(len(things))}. 
+        Масса рюкзака: {player.inventory.get_mass()}""")
+        for i, thing in enumerate(things, start=1):
+            print(i, thing)
+
+    @staticmethod
+    def show_equipment(player: Player):
+        weapon = player.current_weapon
+        if weapon:
+            print("В твеой руке сейчас:", weapon)
+        else:
+            print("У тебя нет оружия")
+        armor = player.current_armor
+        if weapon:
+            print("На тебе сейчас:", armor)
+        else:
+            print("У тебя нет брони")
+
+
+    @staticmethod
+    def use_thing(player):
+        thing = InventoryInterface.__get_thing(player.inventory.things)
+        if thing:
+            print(f"Использование предмета: {thing}")
+
+    @staticmethod
+    def delete_thing(player):
+        thing = InventoryInterface.__get_thing(player.inventory.things)
+        if thing:
+            print(f'Вы выбросили {thing}')
+
+    @staticmethod
+    def take_thing(player):
+        things = player.current_room.things
+        if not things:
+            print("В этой комнате нет вещей")
+            return
+        elif player.current_room.enemies:
+            print("В этой комнате ещё есть враги")
+            return
+        thing = InventoryInterface.__get_thing(player.inventory.things)
+        if thing:
+            player.inventory.add_thing(thing)
+            print(f'Вы подобрали {thing}')
+
+    @staticmethod
+    def __get_thing(things):
+        length = len(things)
+        if length == 0:
+            print(f"У тебя нет предметов")
+            return
+        print(f"Выбери предмет. Введи число от 1 до {length}")
+        t = input()
+        if t not in [str(i) for i in range(1, length + 1)]:
+            print("Неверный номер предмета")
+            return
+        else:
+            return things.pop(int(t) - 1)
+
+

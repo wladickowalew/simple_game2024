@@ -1,4 +1,6 @@
 from random import randint, choice
+from Inventory import Inventory
+from Rooms import Room
 
 
 class GamePerson:
@@ -18,12 +20,12 @@ class GamePerson:
 
 
 class Player(GamePerson):
-    def __init__(self, name, room):
+    def __init__(self, name, room: Room):
         super().__init__(100, 50)
         self.name = name
-        self.inventory = []
+        self.inventory = Inventory()
         self.current_weapon = None
-        self.armor = None
+        self.current_armor = None
         self.current_room = room
         # self.armor_head = None
         # self.armor_body = None
