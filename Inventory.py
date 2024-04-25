@@ -1,7 +1,3 @@
-from Game_things import Thing
-from Game_persons import Player
-
-
 class Inventory:
     MAX_MASS = 50
 
@@ -19,7 +15,7 @@ class Inventory:
         self.sum_mass -= self.things[index]
         return self.things.pop(index)
 
-    def add_thing(self, obj: Thing):
+    def add_thing(self, obj):
         if self.sum_mass + obj.mass >= Inventory.MAX_MASS:
             return False
         else:
@@ -31,7 +27,7 @@ class Inventory:
 class InventoryInterface:
 
     @staticmethod
-    def main(player: Player):
+    def main(player):
         while True:
             print("""
             Ты зашёл в меню инвенторя. Что ты хочешь?
@@ -61,7 +57,7 @@ class InventoryInterface:
                 print("Ты ввёл что-то непонятное. Попробуй ещё раз")
 
     @staticmethod
-    def show_inventory(player: Player):
+    def show_inventory(player):
         things = player.inventory.get_things()
         print(f"""Ты заглядывешь в рюкзак, вещей: {len(len(things))}. 
         Масса рюкзака: {player.inventory.get_mass()}""")
@@ -69,7 +65,7 @@ class InventoryInterface:
             print(i, thing)
 
     @staticmethod
-    def show_equipment(player: Player):
+    def show_equipment(player):
         weapon = player.current_weapon
         if weapon:
             print("В твеой руке сейчас:", weapon)

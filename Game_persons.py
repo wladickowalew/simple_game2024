@@ -1,6 +1,5 @@
 from random import randint, choice
 from Inventory import Inventory
-from Rooms import Room
 
 
 class GamePerson:
@@ -20,7 +19,7 @@ class GamePerson:
 
 
 class Player(GamePerson):
-    def __init__(self, name, room: Room):
+    def __init__(self, name, room):
         super().__init__(100, 50)
         self.name = name
         self.inventory = Inventory()
