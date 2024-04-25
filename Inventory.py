@@ -43,7 +43,7 @@ class InventoryInterface:
                 elif choice == '4':
                     InventoryInterface.delete_thing(player)
                 elif choice == '5':
-                    InventoryInterface.take_equipment(player)
+                    InventoryInterface.take_thing(player)
                 else:
                     break
             else:
@@ -52,7 +52,7 @@ class InventoryInterface:
     @staticmethod
     def show_inventory(player):
         things = player.inventory.get_things()
-        print(f"""Ты заглядывешь в рюкзак, вещей: {len(len(things))}. 
+        print(f"""Ты заглядывешь в рюкзак, вещей: {len(things)}. 
         Масса рюкзака: {player.inventory.get_mass()}""")
         for i, thing in enumerate(things, start=1):
             print(i, thing)
@@ -92,7 +92,7 @@ class InventoryInterface:
         elif player.current_room.enemies:
             print("В этой комнате ещё есть враги")
             return
-        thing = InventoryInterface.__get_thing(player.inventory.things)
+        thing = InventoryInterface.__get_thing(player.current_room.things)
         if thing:
             player.inventory.add_thing(thing)
             print(f'Вы подобрали {thing}')
