@@ -1,3 +1,6 @@
+from consts import *
+
+
 class Inventory:
     MAX_MASS = 50
 
@@ -29,17 +32,7 @@ class InventoryInterface:
     @staticmethod
     def main(player):
         while True:
-            print("""
-            Ты зашёл в меню инвенторя. Что ты хочешь?
-                1) Осомтреть вещи в рюкзаке
-                2) Осмотреть своё снаряжение
-                3) Использовать предмет
-                4) Выкинуть предмет
-                5) Подобрать вещи
-                6) Вернуться к путешествию
-            Укажи номер своего действия: 
-            """)
-            choice = input()
+            choice = input(INVENTORY_INTERFACE_TEXT)
             if choice in ['1', '2', '3', '4', '5', '6']:
                 if choice == '1':
                     InventoryInterface.show_inventory(player)

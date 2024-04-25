@@ -1,16 +1,19 @@
 from Rooms import Room
 from Game_persons import Player
+from Inventory import InventoryInterface
+from consts import *
 
 
-def choose_room(room):
+def go_to_room(player):
+    room = player.current_room
     print(f"Выбери, в какой проход пойти. Введи цифру от 1 до {room.get_rooms_count()}")
     try:
         ans = int(input()) - 1
         assert 0 <= ans < room.get_rooms_count()
-        return ans
+        player.current_room = player.current_room.go_to_room(ans)
     except Exception:
         print("Неверный ввод, попробуй ещё раз)")
-        return choose_room(room)
+        go_to_room(room)
 
 
 def main():
@@ -20,8 +23,16 @@ def main():
     player = Player(name, current_room)
     while True:
         player.current_room.show_room_info()
-        i = choose_room(player.current_room)
-        player.current_room = player.current_room.go_to_room(i)
+        choice = input(MAIN_INTERFACE_TEXT)
+        if choice in ['1', '2', '3']:
+            if choice == '1':
+                go_to_room(player)
+            elif choice == '2':
+                InventoryInterface.main(player)
+            else:
+                print('начинается битва')
+        else:
+            print(ERROR_INPUT_TEXT)
 
 
 if __name__ == '__main__':
