@@ -39,6 +39,6 @@ class Room:
             print("Вы здесь впервые")
         else:
             print("Вы здесь уже были")
-        print("Враг:", *self.enemies, sep=", ")
-        print("Лут:", *self.things, sep=", ")
+        print("Враг:", self.enemies, sep=" ")
+        print("Лут:", *self.things, sep=" ")
         print("Количество выходов из комнаты:", len(self.rooms))

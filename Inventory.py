@@ -15,7 +15,7 @@ class Inventory:
         return self.sum_mass
 
     def delete_thing(self, index):
-        self.sum_mass -= self.things[index]
+        self.sum_mass -= self.things[index].mass
         return self.things.pop(index)
 
     def add_thing(self, obj):
@@ -52,8 +52,8 @@ class InventoryInterface:
     @staticmethod
     def show_inventory(player):
         things = player.inventory.get_things()
-        print(f"""Ты заглядывешь в рюкзак, вещей: {len(things)}. 
-        Масса рюкзака: {player.inventory.get_mass()}""")
+        print(f"\n\nТы заглядывешь в рюкзак, вещей: {len(things)}.")
+        print(f"Масса рюкзака: {player.inventory.get_mass()}""")
         for i, thing in enumerate(things, start=1):
             print(i, thing)
 
@@ -73,13 +73,13 @@ class InventoryInterface:
 
     @staticmethod
     def use_thing(player):
-        thing = InventoryInterface.__get_thing(player.inventory.things)
+        thing = InventoryInterface.__get_thing(player)
         if thing:
             print(f"Использование предмета: {thing}")
 
     @staticmethod
     def delete_thing(player):
-        thing = InventoryInterface.__get_thing(player.inventory.things)
+        thing = InventoryInterface.__get_thing(player)
         if thing:
             print(f'Вы выбросили {thing}')
 
@@ -92,23 +92,32 @@ class InventoryInterface:
         elif player.current_room.enemies:
             print("В этой комнате ещё есть враги")
             return
-        thing = InventoryInterface.__get_thing(player.current_room.things)
-        if thing:
-            player.inventory.add_thing(thing)
-            print(f'Вы подобрали {thing}')
+        print("В углу комнаты лежат следующие предметы:")
+        for i, thing in enumerate(things, start=1):
+            print(i, thing)
+        print(f"Выбери предмет. Введи число от 1 до {len(things)}")
+        t = input()
+        if t not in [str(i) for i in range(1, len(things) + 1)]:
+            print("Неверный номер предмета")
+            return
+        thing = things.pop(int(t) - 1)
+        player.inventory.add_thing(thing)
+        print(f'Вы подобрали {thing}')
 
     @staticmethod
-    def __get_thing(things):
-        length = len(things)
+    def __get_thing(player):
+        length = len(player.inventory.things)
         if length == 0:
             print(f"У тебя нет предметов")
             return
+        for i, thing in enumerate(player.inventory.things, start=1):
+            print(i, thing)
         print(f"Выбери предмет. Введи число от 1 до {length}")
         t = input()
         if t not in [str(i) for i in range(1, length + 1)]:
             print("Неверный номер предмета")
             return
         else:
-            return things.pop(int(t) - 1)
+            return player.inventory.delete_thing(int(t) - 1)
 
 
