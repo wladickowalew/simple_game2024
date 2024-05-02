@@ -1,5 +1,6 @@
 from random import randint, choice
 from Inventory import Inventory
+from consts import *
 
 
 class GamePerson:
@@ -19,8 +20,11 @@ class GamePerson:
 
 
 class Player(GamePerson):
+    permanent_hp = 0
+    permanent_attack = 0
+
     def __init__(self, name, room):
-        super().__init__(100, 50)
+        super().__init__(100 + self.permanent_hp, 50 + self.permanent_attack)
         self.name = name
         self.inventory = Inventory()
         self.current_weapon = None
@@ -30,6 +34,47 @@ class Player(GamePerson):
         # self.armor_body = None
         # self.armor_foot = None
         # self.armor_arm = None
+
+    def change_armor(self, new_armor):
+        if self.current_armor is None:
+            self.current_armor = new_armor
+            return True
+        if self.inventory.add_thing(self.current_armor):
+            self.current_armor = new_armor
+            return True
+        else:
+            self.inventory.add_thing(new_armor)
+            return False
+
+    def change_weapon(self, new_weapon):
+        if self.current_weapon is None:
+            self.current_weapon = new_weapon
+            return True
+        if self.inventory.add_thing(self.current_weapon):
+            self.current_weapon = new_weapon
+            return True
+        else:
+            self.inventory.add_thing(new_weapon)
+            return False
+
+    def eat_thing(self, eat):
+        if eat.permanent:
+            if eat.type == TYPE_HP:
+                self.permanent_hp += eat.points
+                self.hp += eat.points
+                self.max_hp += eat.points
+            elif eat.type == TYPE_ATTACK:
+                self.permanent_attack += eat.points
+                self.attack += eat.points
+        else:
+            if eat.type == TYPE_HP:
+                self.hp = min(eat.points + self.hp, self.max_hp)
+            elif eat.type == TYPE_ATTACK:
+                self.attack += eat.points
+
+    def __str__(self):
+        return (f"Персонаж {self.name}, HP:{self.hp}/{self.max_hp}, " +
+                f"Уровень атаки: {self.attack}")
 
 
 class Enemy(GamePerson):

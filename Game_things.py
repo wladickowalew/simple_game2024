@@ -1,5 +1,5 @@
 from random import randint, choice, random
-
+from consts import *
 
 class Thing:
     def __init__(self, type, mass):
@@ -66,8 +66,7 @@ class Eat(Thing):
 
 class EatBuilder:
     EAT_PROBABILITY = 33
-    TYPE_HP = 0
-    TYPE_ATTACK = 1
+
     FOOD = [
         Eat("Авакадо", 50, TYPE_HP, False, 10),  # 1 - 10
         Eat("Груша", 25, TYPE_ATTACK, False, 10),  # 11 - 20

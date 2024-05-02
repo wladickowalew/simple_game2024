@@ -1,4 +1,5 @@
 from consts import *
+from Game_things import Armor, Weapon, Eat
 
 
 class Inventory:
@@ -59,13 +60,14 @@ class InventoryInterface:
 
     @staticmethod
     def show_equipment(player):
+        print(player)
         weapon = player.current_weapon
         if weapon:
-            print("В твеой руке сейчас:", weapon)
+            print("В твоей руке сейчас:", weapon)
         else:
             print("У тебя нет оружия")
         armor = player.current_armor
-        if weapon:
+        if armor:
             print("На тебе сейчас:", armor)
         else:
             print("У тебя нет брони")
@@ -74,8 +76,24 @@ class InventoryInterface:
     @staticmethod
     def use_thing(player):
         thing = InventoryInterface.__get_thing(player)
-        if thing:
-            print(f"Использование предмета: {thing}")
+        if not thing:
+            return
+        print(f"Использование предмета: {thing}")
+        if isinstance(thing, Armor):
+            if not player.change_armor(thing):
+                print("Невозможно заменить броню")
+            else:
+                print("Успешная замена брони, экипировано: ", thing)
+        elif isinstance(thing, Weapon):
+            if not player.change_weapon(thing):
+                print("Невозможно заменить оружие")
+            else:
+                print("Успешная замена оружия, экипировано: ", thing)
+        elif isinstance(thing, Eat):
+            player.eat_thing(thing)
+            print("Вы съели:", Eat)
+        else:
+            print("КАААААААК???", thing)
 
     @staticmethod
     def delete_thing(player):
@@ -89,9 +107,9 @@ class InventoryInterface:
         if not things:
             print("В этой комнате нет вещей")
             return
-        elif player.current_room.enemies:
-            print("В этой комнате ещё есть враги")
-            return
+        # elif player.current_room.enemies:
+        #     print("В этой комнате ещё есть враги")
+        #     return
         print("В углу комнаты лежат следующие предметы:")
         for i, thing in enumerate(things, start=1):
             print(i, thing)

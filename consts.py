@@ -18,3 +18,6 @@ INVENTORY_INTERFACE_TEXT = ("""
 
 Укажи номер своего действия: """)
 ERROR_INPUT_TEXT = "Ты ввёл что-то непонятное. Попробуй ещё раз"
+
+TYPE_HP = 0
+TYPE_ATTACK = 1
