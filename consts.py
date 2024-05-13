@@ -19,5 +19,8 @@ INVENTORY_INTERFACE_TEXT = ("""
 Укажи номер своего действия: """)
 ERROR_INPUT_TEXT = "Ты ввёл что-то непонятное. Попробуй ещё раз"
 
+BATTLE_INERFACE_TEXT_BEGIN = 'Вы вступили в бой.'
+BATTLE_INERFACE_TEXT_END = 'Укажите номер действия, которое вы собираетесь совершить:'
+
 TYPE_HP = 0
 TYPE_ATTACK = 1

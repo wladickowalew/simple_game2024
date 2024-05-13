@@ -1,6 +1,7 @@
 from Rooms import Room
 from Game_persons import Player
 from Inventory import InventoryInterface
+from BattleInterface import BattleInterface
 from consts import *
 
 
@@ -30,7 +31,10 @@ def main():
             elif choice == '2':
                 InventoryInterface.main(player)
             else:
-                print('начинается битва')
+                if player.current_room.enemies:
+                    BattleInterface.main(player)
+                else:
+                    print("В этой комнате не с кем драться")
         else:
             print(ERROR_INPUT_TEXT)
 

@@ -9,14 +9,15 @@ class GamePerson:
         self.max_hp = hp
         self.attack = attack
 
-    def attack(self, other):
+    def attack_other(self, other):
         if self.attack > other.hp:
             other.hp = 0
         else:
             other.hp -= self.attack
+        return self.attack
 
     def is_dead(self):
-        return self.hp == 0
+        return self.hp <= 0
 
 
 class Player(GamePerson):
@@ -133,12 +134,13 @@ class EnemyBuilder:
 
     def get_enemies(self, level):
         enemies = []
-        for i in range(3):
-            p = randint(1, 100)
-            if p <= Enemy.GOBLIN_PROBABILITY:
-                enemies.append(Goblin(level + randint(-2, 2)))
-        p = randint(1, 100)
-        if p <= Enemy.BEAR_PROBABILITY:
-            enemies.append(Bear(level + randint(-2, 2)))
-
+        # for i in range(3):
+        #     p = randint(1, 100)
+        #     if p <= Enemy.GOBLIN_PROBABILITY:
+        #         enemies.append(Goblin(level + randint(-2, 2)))
+        # p = randint(1, 100)
+        # if p <= Enemy.BEAR_PROBABILITY:
+        #     enemies.append(Bear(level + randint(-2, 2)))
+        for i in range(1):
+            enemies.append(Goblin(level + randint(-2, 2)))
         return enemies
