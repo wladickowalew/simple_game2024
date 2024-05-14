@@ -27,11 +27,8 @@ class BattleInterface:
                     lenta.remove(enemy)
             else:
                 BattleInterface.step_enemy(q, player)
-        if not player.is_dead():
-            print("Бой окончен")
-            return True
-        else:
-            return False
+        print("Бой окончен")
+
 
     @staticmethod
     def step_user(player):
@@ -66,8 +63,6 @@ class BattleInterface:
     def step_enemy(enemy, player):
         a = enemy.attack_other(player)
         print(f"Враг {enemy} атакует вас на {a} очков")
-        if player.is_dead():
-            print("Game over!")
 
     @staticmethod
     def show_text(enemies):

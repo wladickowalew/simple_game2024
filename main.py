@@ -26,7 +26,7 @@ def main():
     current_room.generate_room()
     name = input("Выбери имя для своего персонажа: ")
     player = Player(name, current_room)
-    while True:
+    while not player.is_dead():
         player.current_room.show_room_info()
         choice = input(MAIN_INTERFACE_TEXT)
         if choice in ['1', '2', '3']:
@@ -41,6 +41,7 @@ def main():
                     print("В этой комнате не с кем драться")
         else:
             print(ERROR_INPUT_TEXT)
+    print("Игра окончена! Вы посетили комнат: ", 5)
 
 
 if __name__ == '__main__':

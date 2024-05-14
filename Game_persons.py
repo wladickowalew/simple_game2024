@@ -28,7 +28,7 @@ class Player(GamePerson):
     permanent_attack = 0
 
     def __init__(self, name, room):
-        super().__init__(100 + self.permanent_hp, 50 + self.permanent_attack)
+        super().__init__(100 + self.permanent_hp, 45 + self.permanent_attack)
         self.name = name
         self.inventory = Inventory()
         self.current_weapon = None
@@ -107,7 +107,7 @@ class Goblin(Enemy):
              'Лапосун', 'Острозуб', 'Бешенец', 'Скитунец']
 
     def __init__(self, level):
-        super().__init__("Гоблин", 25, 50)
+        super().__init__("Гоблин", 100, 50)
         self.weapon = None
         self.name = choice(self.NAMES)
         self.level = level
