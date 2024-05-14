@@ -11,10 +11,14 @@ def go_to_room(player):
     try:
         ans = int(input()) - 1
         assert 0 <= ans < room.get_rooms_count()
-        player.current_room = player.current_room.go_to_room(ans)
+        if player.current_room.enemies and ans != 0:
+            print("Путь преграждают враги!")
+            return
+        else:
+            player.current_room = player.current_room.go_to_room(ans)
     except Exception:
         print("Неверный ввод, попробуй ещё раз)")
-        go_to_room(room)
+        go_to_room(player)
 
 
 def main():

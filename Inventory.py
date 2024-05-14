@@ -107,9 +107,9 @@ class InventoryInterface:
         if not things:
             print("В этой комнате нет вещей")
             return
-        # elif player.current_room.enemies:
-        #     print("В этой комнате ещё есть враги")
-        #     return
+        elif player.current_room.enemies:
+            print("В этой комнате ещё есть враги")
+            return
         print("В углу комнаты лежат следующие предметы:")
         for i, thing in enumerate(things, start=1):
             print(i, thing)

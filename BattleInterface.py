@@ -15,16 +15,13 @@ class BattleInterface:
             lenta = [player] + BattleInterface.enemies[::]
         else:
             lenta = ([player] + BattleInterface.enemies[:2] +
-                     [player] + BattleInterface.enemies[2])
+                     [player] + [BattleInterface.enemies[2]])
         counter = -1
-        print(lenta)
-        print(BattleInterface.enemies)
-        print(BattleInterface.escape)
         while not (player.is_dead() or (not BattleInterface.enemies) or BattleInterface.escape):
             counter = (counter + 1) % len(lenta)
             q = lenta[counter]
             if q == player:
-                print("Очередь Боя:", "->".join([str(p) for p in lenta]))
+                print("Очередь Боя:", " -> ".join([p.get_full_name() for p in lenta]))
                 enemy = BattleInterface.step_user(player)
                 if not (enemy is None):
                     lenta.remove(enemy)
@@ -44,25 +41,26 @@ class BattleInterface:
             p = 100 - 25 * n
             BattleInterface.show_text(enemies)
             choice = input(BATTLE_INERFACE_TEXT_END)
-            if choice in [str(i) for i in range(n + 1)]:
-                k = int(choice)
-                if k == n + 1:
-                    if randint(1, 100) < p:
-                        print("Вы успешно сбежали")
-                        BattleInterface.escape = True
-                    else:
-                        print("Неудачная попытка бегства(((")
-                    break
-                else:
-                    a = player.attack_other(enemies[k - 1])
-                    print("Вы атакуете врага на", a, "очков")
-                    if enemies[k - 1].is_dead():
-                        print("Враг повержен!")
-                        return enemies.pop(k - 1)
-                    else:
-                        return None
-            else:
+            if choice not in [str(i) for i in range(1, n + 2)]:
                 print("Ты ввёл что-то непонятное. Попробуй ещё раз")
+                continue
+            k = int(choice)
+            if k == n + 1:
+                if randint(1, 100) < p:
+                    print("Вы успешно сбежали")
+                    BattleInterface.escape = True
+                else:
+                    print("Неудачная попытка бегства(((")
+                break
+            else:
+                a = player.attack_other(enemies[k - 1])
+                print("Вы атакуете врага на", a, "очков")
+                if enemies[k - 1].is_dead():
+                    print("Враг повержен!")
+                    return enemies.pop(k - 1)
+                else:
+                    return None
+
 
     @staticmethod
     def step_enemy(enemy, player):

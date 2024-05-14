@@ -11,7 +11,10 @@ class Room:
     def __init__(self):
         self.num = Room.__N
         Room.__N += 1
-        self.enemies = self.__ENEMY_BUILDER.get_enemies(5)
+        if self.num == 1:
+            self.enemies = []
+        else:
+            self.enemies = self.__ENEMY_BUILDER.get_enemies(5)
         self.things = self.__THING_BUILDER.get_things(5)
         self.rooms = []
         self.first_enter = True
