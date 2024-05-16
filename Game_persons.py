@@ -34,10 +34,18 @@ class Player(GamePerson):
         self.current_weapon = None
         self.current_armor = None
         self.current_room = room
-        # self.armor_head = None
-        # self.armor_body = None
-        # self.armor_foot = None
-        # self.armor_arm = None
+        self.rooms_count = 1
+        self.kill_count = 0
+        self.points = 0
+
+    def attack_other(self, other):
+        attack = self.attack
+        if self.current_weapon:
+            attack += self.current_weapon.attack
+        other.hp -= attack
+        if self.current_weapon:
+            self.current_weapon.attack -= 5
+        return attack
 
     def get_full_name(self):
         return self.name
@@ -92,6 +100,20 @@ class Enemy(GamePerson):
         super().__init__(hp, attack)
         self.type = type
 
+    def attack_other(self, other):
+        if other.current_armor:
+            armor = other.current_armor.hp
+        else:
+            armor = 0
+        if self.attack > armor:
+            r = self.attack - armor
+        else:
+            r = 0
+        if other.current_armor:
+            other.current_armor.hp -= 10
+        other.hp -= r
+        return r
+
     def __str__(self):
         return self.get_full_name() + f" HP: {self.hp}/{self.max_hp}"
 
@@ -107,8 +129,9 @@ class Goblin(Enemy):
              'Лапосун', 'Острозуб', 'Бешенец', 'Скитунец']
 
     def __init__(self, level):
-        super().__init__("Гоблин", 100, 50)
-        self.weapon = None
+        super().__init__("Гоблин",
+                         25 + 5 * level,
+                         50 + 10 * level)
         self.name = choice(self.NAMES)
         self.level = level
 
@@ -124,8 +147,9 @@ class Bear(Enemy):
              'Хищный', 'Монстрозный', 'Гордый', 'Дикий']
 
     def __init__(self, level):
-        super().__init__("Медведь", 80, 100)
-        self.armor = None
+        super().__init__("Медведь",
+                         80 + 10 * level,
+                         100 + 30 * level)
         self.name = choice(self.NAMES)
         self.level = level
 

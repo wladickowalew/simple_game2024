@@ -8,14 +8,15 @@ class Room:
     __THING_BUILDER = ThingBuilder()
     __ENEMY_BUILDER = EnemyBuilder()
 
-    def __init__(self):
+    def __init__(self, level=1):
         self.num = Room.__N
         Room.__N += 1
+        self.level = level
         if self.num == 1:
             self.enemies = []
         else:
-            self.enemies = self.__ENEMY_BUILDER.get_enemies(5)
-        self.things = self.__THING_BUILDER.get_things(5)
+            self.enemies = self.__ENEMY_BUILDER.get_enemies(level // 2)
+        self.things = self.__THING_BUILDER.get_things(level // 2)
         self.rooms = []
         self.first_enter = True
 
@@ -24,7 +25,7 @@ class Room:
         if from_room != -1:
             self.rooms.append(from_room)
         for i in range(rooms_count):
-            self.rooms.append(Room())
+            self.rooms.append(Room(self.level + 1))
 
     def get_rooms_count(self):
         return len(self.rooms)

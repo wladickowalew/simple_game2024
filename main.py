@@ -15,6 +15,9 @@ def go_to_room(player):
             print("Путь преграждают враги!")
             return
         else:
+            if player.current_room.rooms[ans].first_enter:
+                player.points += 10
+                player.rooms_count += 1
             player.current_room = player.current_room.go_to_room(ans)
     except Exception:
         print("Неверный ввод, попробуй ещё раз)")
@@ -41,7 +44,9 @@ def main():
                     print("В этой комнате не с кем драться")
         else:
             print(ERROR_INPUT_TEXT)
-    print("Игра окончена! Вы посетили комнат: ", 5)
+    print(f"Игра окончена!\nВы посетили комнат: {player.rooms_count}\n" +
+          f"Убили врагов: {player.kill_count}\n" +
+          f"Всего очков заработано: {player.points}")
 
 
 if __name__ == '__main__':

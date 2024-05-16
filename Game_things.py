@@ -23,9 +23,10 @@ class Armor(Thing):
         super().__init__("Броня", randint(50, 100) / 10)
         self.name = choice(self.NAMES)
         self.level = 1 if level < 1 else level
+        self.hp = 10 + 10 * level + randint(-10, 10)
 
     def __str__(self):
-        return f"ARMOR ({self.name}, {self.level}, {self.mass}))"
+        return f"ARMOR ({self.name}, {self.level}, {self.mass}, {self.hp}))"
 
 
 
@@ -43,9 +44,10 @@ class Weapon(Thing):
         super().__init__("Оружие", randint(50, 100) / 10)
         self.name = choice(self.NAMES)
         self.level = 1 if level < 1 else level
+        self.attack = 15 + 5 * level + randint(-4, 4)
 
     def __str__(self):
-        return f"WEAPON ({self.name}, {self.level}, {self.mass}))"
+        return f"WEAPON ({self.name}, {self.level}, {self.mass}, {self.attack}))"
 
     def __repr__(self):
         return self.__str__()

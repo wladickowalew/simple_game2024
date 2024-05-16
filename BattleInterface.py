@@ -1,5 +1,6 @@
 from consts import *
 from random import randint
+from Game_persons import Bear, Goblin
 
 
 class BattleInterface:
@@ -52,8 +53,19 @@ class BattleInterface:
             else:
                 a = player.attack_other(enemies[k - 1])
                 print("Вы атакуете врага на", a, "очков")
+                if player.current_weapon:
+                    if player.current_weapon.attack <= 0:
+                        player.current_weapon = None
+                        print("Вашe стало тупее тупого угла")
+                    else:
+                        print("Ваша оружее немного затупилось о броню врага. ", player.current_weapon.attack)
                 if enemies[k - 1].is_dead():
                     print("Враг повержен!")
+                    player.kill_count += 1
+                    if isinstance(enemies[k - 1], Bear):
+                        player.points += 10 * enemies[k - 1].level
+                    elif isinstance(enemies[k - 1], Goblin):
+                        player.points += 5 * enemies[k - 1].level
                     return enemies.pop(k - 1)
                 else:
                     return None
@@ -63,6 +75,13 @@ class BattleInterface:
     def step_enemy(enemy, player):
         a = enemy.attack_other(player)
         print(f"Враг {enemy} атакует вас на {a} очков")
+        if not player.current_armor:
+            return
+        if player.current_armor.hp <= 0:
+            player.current_armor = None
+            print("Ваша броня разрушена. Больше она вас не защищает")
+        else:
+            print("Ваша броня пострадала, текущее хп брони:", player.current_armor.hp)
 
     @staticmethod
     def show_text(enemies):
