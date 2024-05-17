@@ -2,6 +2,7 @@ from Rooms import Room
 from Game_persons import Player
 from Inventory import InventoryInterface
 from BattleInterface import BattleInterface
+from sql_connector import SqlConnector
 from consts import *
 
 
@@ -25,6 +26,7 @@ def go_to_room(player):
 
 
 def main():
+    SqlConnector.init()
     current_room = Room()
     current_room.generate_room()
     name = input("Выбери имя для своего персонажа: ")
