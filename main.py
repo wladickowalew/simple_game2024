@@ -46,9 +46,39 @@ def main():
                     print("В этой комнате не с кем драться")
         else:
             print(ERROR_INPUT_TEXT)
-    print(f"Игра окончена!\nВы посетили комнат: {player.rooms_count}\n" +
+    game_over(player)
+
+
+def game_over(player):
+    SqlConnector.update_user(player.tg_id, player.permanent_attack, player.permanent_hp)
+    print(f"\nИгра окончена!\nВы посетили комнат: {player.rooms_count}\n" +
           f"Убили врагов: {player.kill_count}\n" +
           f"Всего очков заработано: {player.points}")
+    SqlConnector.add_record(player.tg_id,
+                            player.rooms_count,
+                            player.kill_count,
+                            player.points,
+                            0)
+    show_user_statistic(player)
+    show_all_statistic()
+
+
+def show_user_statistic(player):
+    columns = ["Имя", "Комнат", "Убийств", "Очков"]
+    data_u = SqlConnector.read_stat_for_user(player.tg_id)
+    print("\nВаша Статистика:")
+    print("\t".join(i.ljust(10, " ") for i in columns))
+    for tr in data_u:
+        print("\t".join(str(i).ljust(10, " ") for i in tr[:-1]))
+
+
+def show_all_statistic():
+    columns = ["Имя", "Комнат", "Убийств", "Очков"]
+    data_all = SqlConnector.read_stat_by_points()
+    print("\nВcя Статистика:")
+    print("\t".join(i.ljust(10, " ") for i in columns))
+    for tr in data_all:
+        print("\t".join(str(i).ljust(10, " ") for i in tr[:-1]))
 
 
 if __name__ == '__main__':

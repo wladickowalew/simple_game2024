@@ -1,5 +1,6 @@
 from random import randint, choice
 from Inventory import Inventory
+from sql_connector import SqlConnector
 from consts import *
 
 
@@ -27,8 +28,17 @@ class Player(GamePerson):
     permanent_hp = 0
     permanent_attack = 0
 
-    def __init__(self, name, room):
+    def __init__(self, tg_id, room):
+        data = SqlConnector.read_user(tg_id)
+        name = tg_id
+        if data:
+            name = data[0]
+            self.permanent_attack = int(data[1])
+            self.permanent_hp = int(data[2])
+        else:
+            SqlConnector.add_user(tg_id, tg_id)
         super().__init__(100 + self.permanent_hp, 45 + self.permanent_attack)
+        self.tg_id = tg_id
         self.name = name
         self.inventory = Inventory()
         self.current_weapon = None
@@ -37,6 +47,7 @@ class Player(GamePerson):
         self.rooms_count = 1
         self.kill_count = 0
         self.points = 0
+        self.run_count = 0
 
     def attack_other(self, other):
         attack = self.attack

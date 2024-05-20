@@ -73,7 +73,7 @@ class SqlConnector:
                     FROM records
                     WHERE tg_id = '{tg_id}' 
                     ORDER BY points DESC'''
-        response = SqlConnector.cursor.execute(query).fetchall()
+        response = SqlConnector.cursor.execute(query).fetchmany(10)
         return response
 
     @staticmethod
@@ -83,20 +83,19 @@ class SqlConnector:
                     FROM records r 
                     GROUP BY tg_id
                     ORDER BY points DESC'''
-        response = SqlConnector.cursor.execute(query).fetchall()
+        response = SqlConnector.cursor.execute(query).fetchmany(10)
         return response
 
 
 if __name__ == '__main__':
+    SqlConnector.init()
     # a.add_user('12234', 'Vasya')
     # a.update_user('Vasya', 5, 10)
-    # print(a.read_user('12234'))
+    # print(SqlConnector.read_stat_by_points())
     # a.add_record('12234', 55, 16, 352, 3)
     # a.add_user('OLEG', 'OLEG')
     # a.add_user('123', '123')
     # a.add_user('r', 'r')
     # a.add_record('r', 51, 1412346, 5, 31)
     # a.add_record('r', 52142, 11231, 14, 31)
-    # a.add_record('r', 5244, 131243, 31, 31)
-    SqlConnector.init()
-    print(SqlConnector.read_stat_by_points())
+    # print(SqlConnector.read_stat_by_points())
