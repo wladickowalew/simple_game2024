@@ -1,6 +1,9 @@
 from consts import *
 from random import randint
 from Game_persons import Bear, Goblin
+from Game_adapter import IOAdapter
+
+my_print, my_input = IOAdapter.get_io_functions()
 
 
 class BattleInterface:
@@ -9,7 +12,7 @@ class BattleInterface:
 
     @staticmethod
     def main(player):
-        print(BATTLE_INERFACE_TEXT_BEGIN)
+        my_print(BATTLE_INERFACE_TEXT_BEGIN)
         BattleInterface.escape = False
         BattleInterface.enemies = player.current_room.enemies
         if len(BattleInterface.enemies) < 3:
@@ -22,13 +25,13 @@ class BattleInterface:
             counter = (counter + 1) % len(lenta)
             q = lenta[counter]
             if q == player:
-                print("Очередь Боя:", " -> ".join([p.get_full_name() for p in lenta]))
+                my_print("Очередь Боя:", " -> ".join([p.get_full_name() for p in lenta]))
                 enemy = BattleInterface.step_user(player)
                 if not (enemy is None):
                     lenta.remove(enemy)
             else:
                 BattleInterface.step_enemy(q, player)
-        print("Бой окончен")
+        my_print("Бой окончен")
 
 
     @staticmethod
@@ -38,29 +41,29 @@ class BattleInterface:
             n = len(enemies)
             p = 100 - 25 * n
             BattleInterface.show_text(enemies)
-            choice = input(BATTLE_INERFACE_TEXT_END)
+            choice = my_input(BATTLE_INERFACE_TEXT_END)
             if choice not in [str(i) for i in range(1, n + 2)]:
-                print("Ты ввёл что-то непонятное. Попробуй ещё раз")
+                my_print("Ты ввёл что-то непонятное. Попробуй ещё раз")
                 continue
             k = int(choice)
             if k == n + 1:
                 if randint(1, 100) < p:
-                    print("Вы успешно сбежали")
+                    my_print("Вы успешно сбежали")
                     BattleInterface.escape = True
                 else:
-                    print("Неудачная попытка бегства(((")
+                    my_print("Неудачная попытка бегства(((")
                 break
             else:
                 a = player.attack_other(enemies[k - 1])
-                print("Вы атакуете врага на", a, "очков")
+                my_print(f"Вы атакуете врага на {a} очков")
                 if player.current_weapon:
                     if player.current_weapon.attack <= 0:
                         player.current_weapon = None
-                        print("Вашe стало тупее тупого угла")
+                        my_print("Вашe стало тупее тупого угла")
                     else:
-                        print("Ваша оружее немного затупилось о броню врага. ", player.current_weapon.attack)
+                        my_print(f"Ваша оружее немного затупилось о броню врага. {player.current_weapon.attack}")
                 if enemies[k - 1].is_dead():
-                    print("Враг повержен!")
+                    my_print("Враг повержен!")
                     player.kill_count += 1
                     if isinstance(enemies[k - 1], Bear):
                         player.points += 10 * enemies[k - 1].level
@@ -74,23 +77,23 @@ class BattleInterface:
     @staticmethod
     def step_enemy(enemy, player):
         a = enemy.attack_other(player)
-        print(f"Враг {enemy} атакует вас на {a} очков")
+        my_print(f"Враг {enemy} атакует вас на {a} очков")
         if not player.current_armor:
             return
         if player.current_armor.hp <= 0:
             player.current_armor = None
-            print("Ваша броня разрушена. Больше она вас не защищает")
+            my_print("Ваша броня разрушена. Больше она вас не защищает")
         else:
-            print("Ваша броня пострадала, текущее хп брони:", player.current_armor.hp)
+            my_print(f"Ваша броня пострадала, текущее хп брони: {player.current_armor.hp}")
 
     @staticmethod
     def show_text(enemies):
         n = len(enemies)
-        print("Перед вами стоят враги:")
+        my_print("Перед вами стоят враги:")
         for enemy in enemies:
-            print(enemy)
-        print("Ваши действия: ")
+            my_print(enemy)
+        my_print("Ваши действия: ")
         for i, enemy in enumerate(enemies, 1):
-            print(f"{i}) Атаковать {enemy}")
+            my_print(f"{i}) Атаковать {enemy}")
         p = 100 - 25 * n
-        print(f"{n + 1}) сбежать (вероятность {p}%)")
+        my_print(f"{n + 1}) сбежать (вероятность {p}%)")

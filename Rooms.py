@@ -37,12 +37,13 @@ class Room:
             new_room.generate_room(from_room=self)
         return new_room
 
-    def show_room_info(self):
-        print("Комната №", self.num)
+    def __str__(self):
+        s = f"\nКомната № {self.num}\n"
         if self.first_enter:
-            print("Вы здесь впервые")
+            s += "Вы здесь впервые\n"
         else:
-            print("Вы здесь уже были")
-        print("Враг:", self.enemies, sep=" ")
-        print("Лут:", *self.things, sep=" ")
-        print("Количество выходов из комнаты:", len(self.rooms))
+            s += "Вы здесь уже были\n"
+        s += f"Враги: {' '.join(str(e) for e in self.enemies)}\n"
+        s += f"Лут: {' '.join(str(e) for e in self.things)}\n"
+        s += f"Количество выходов из комнаты: {len(self.rooms)}"
+        return s
