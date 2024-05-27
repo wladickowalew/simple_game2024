@@ -12,12 +12,16 @@ async def test(msg: Message):
 
 class IOAdapter:
     typeg = ''
+    bot = None
 
     @staticmethod
-    def init(typeg):
+    def init(typeg, bot=None):
         IOAdapter.typeg = typeg
+        IOAdapter.bot = bot
 
     @staticmethod
     def get_io_functions():
         if IOAdapter.typeg == "console":
             return print, input
+        elif IOAdapter.typeg == "tg_bot":
+            return test, input()
